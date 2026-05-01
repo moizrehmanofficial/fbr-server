@@ -54,27 +54,7 @@ app.use('/api/admin',     adminRoutes);
 app.use('/api/fbr',       fbrRoutes);
 app.use('/api/user',      heartbeatRoutes);
 
-// Temporary setup route
-app.get('/api/setup', async (req, res) => {
-  try {
-    const User = require('./models/User');
-    const bcrypt = require('bcryptjs');
-    const existing = await User.findOne({ email: process.env.ADMIN_EMAIL });
-    if (existing) return res.json({ message: 'Admin already exists' });
-    const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12);
-    await User.create({
-      name: 'Admin',
-      email: process.env.ADMIN_EMAIL,
-      password: hash,
-      role: 'admin',
-      isAdmin: true,
-      subscription: { isActive: true, startDate: new Date(), endDate: new Date('2099-12-31') }
-    });
-    res.json({ message: '✅ Admin created successfully!' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
 
 
 
