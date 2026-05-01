@@ -21,9 +21,12 @@ const PORT = process.env.PORT || 5000;
 
 // ── Security middleware ──────────────────────────────────────────────
 app.use(helmet());
+const allowedOrigins = process.env.ALLOWED_ORIGINS;
 app.use(cors({
-  origin:      process.env.ALLOWED_ORIGINS?.split(',') || '*',
+  origin: allowedOrigins === '*' ? '*' : allowedOrigins?.split(',') || '*',
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
