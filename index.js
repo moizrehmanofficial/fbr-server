@@ -44,6 +44,11 @@ const authLimiter = rateLimit({
 });
 app.use('/api/auth/', authLimiter);
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is running' });
+});
+
+
 // ── Routes ───────────────────────────────────────────────────────────
 app.use('/api/auth',      authRoutes);
 app.use('/api/users',     userRoutes);
